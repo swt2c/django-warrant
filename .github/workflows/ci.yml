@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.8"
+    - name: Install dependencies
+      run: |
+        sed -i 's/Django>=2.0/Django~=2.2.0/' requirements.txt
+        python -m pip install -r requirements.txt
+	rm -rf /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/cdu
+	rm -rf /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/warrant/django
+    - name: Run tests
+      run: cd cdu && python manage.py test django_warrant
