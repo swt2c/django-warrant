@@ -20,7 +20,10 @@ jobs:
       run: |
         sed -i 's/Django>=2.0/Django~=2.2.0/' requirements.txt
         python -m pip install -r requirements.txt
-	rm -rf /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/cdu
-	rm -rf /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/warrant/django
+        rm -rf /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/cdu
+        rm -rf /opt/hostedtoolcache/Python/3.8.12/x64/lib/python3.8/site-packages/warrant/django
+        python -m pip install mock
     - name: Run tests
       run: cd cdu && python manage.py test django_warrant
+      env:
+        AWS_DEFAULT_REGION: us-east-1
